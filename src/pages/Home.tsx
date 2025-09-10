@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Calendar, Users, Palette } from 'lucide-react';
+import { ArrowRight, Calendar, Users, Palette, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import ArtworkCard from '@/components/ArtworkCard';
@@ -12,27 +12,30 @@ const Home = () => {
       <section className="relative py-24 lg:py-32">
         <div className="gallery-container">
           <div className="text-center space-y-6">
+            <div className="flex items-center justify-center mb-4">
+              <Sparkles className="h-6 w-6 text-accent mr-2" />
+              <span className="text-accent font-medium">Discover Exceptional Art</span>
+            </div>
             <h1 className="font-playfair text-4xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight">
-              Discover Art That
+              Where Art Comes
               <br />
               <span className="exhibition-gradient bg-clip-text text-transparent">
-                Moves You
+                Alive
               </span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Explore our curated collection of contemporary artworks, meet talented artists, 
-              and immerse yourself in the world of fine art.
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Immerse yourself in a curated collection of extraordinary artworks from talented artists around the world. Experience art like never before.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
               <Link to="/artworks">
                 <Button className="gallery-button-primary px-8 py-3 text-base">
-                  Explore Artworks
+                  Explore Collection
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
               <Link to="/exhibitions">
                 <Button variant="outline" className="px-8 py-3 text-base">
-                  Current Exhibitions
+                  View Exhibitions
                 </Button>
               </Link>
             </div>

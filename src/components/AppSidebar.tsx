@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Home, Palette, Users, Calendar, Heart, Search, LogOut, Sparkles } from 'lucide-react';
+import { Home, Palette, Users, Calendar, Heart, Search, LogOut, Sparkles, Shield } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -23,6 +23,10 @@ const navigationItems = [
   { path: '/artists', label: 'Artists', icon: Users },
   { path: '/exhibitions', label: 'Exhibitions', icon: Calendar },
   { path: '/favorites', label: 'My Collections', icon: Heart },
+];
+
+const adminItems = [
+  { path: '/admin', label: 'Admin Panel', icon: Shield },
 ];
 
 export function AppSidebar() {
@@ -82,6 +86,28 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               {navigationItems.map((item) => (
+                <SidebarMenuItem key={item.path}>
+                  <SidebarMenuButton 
+                    asChild 
+                    isActive={isActive(item.path)}
+                    className="h-11 px-3 rounded-lg"
+                  >
+                    <Link to={item.path} className="flex items-center gap-3">
+                      <item.icon className="h-5 w-5" />
+                      {!isCollapsed && <span className="font-medium">{item.label}</span>}
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Admin Section */}
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu className="space-y-1">
+              {adminItems.map((item) => (
                 <SidebarMenuItem key={item.path}>
                   <SidebarMenuButton 
                     asChild 

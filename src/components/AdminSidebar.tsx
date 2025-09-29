@@ -43,11 +43,11 @@ export function AdminSidebar() {
 
   return (
     <Sidebar className={state === "collapsed" ? "w-14" : "w-60"}>
-      <SidebarHeader className="border-b border-border p-4">
+      <SidebarHeader className="border-b border-sidebar-border bg-sidebar-accent/50 p-4">
         {state !== "collapsed" && (
           <div>
-            <h2 className="text-lg font-semibold">Gallery Admin</h2>
-            <p className="text-sm text-muted-foreground">Management Panel</p>
+            <h2 className="text-lg font-semibold text-sidebar-foreground">Gallery Admin</h2>
+            <p className="text-sm text-sidebar-muted-foreground">Management Panel</p>
           </div>
         )}
       </SidebarHeader>
@@ -60,14 +60,14 @@ export function AdminSidebar() {
               {adminItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <NavLink 
-                      to={item.url} 
-                      end={item.url === '/admin'}
-                      className={({ isActive }) =>
-                        isActive 
-                          ? "bg-primary text-primary-foreground font-medium" 
-                          : "hover:bg-muted/50"
-                      }
+                     <NavLink 
+                       to={item.url} 
+                       end={item.url === '/admin'}
+                       className={({ isActive }) =>
+                         isActive 
+                           ? "bg-primary text-primary-foreground font-semibold shadow-sm ring-1 ring-primary/20" 
+                           : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all duration-200"
+                       }
                     >
                       <item.icon className="h-4 w-4" />
                       {state !== "collapsed" && <span>{item.title}</span>}
@@ -80,11 +80,11 @@ export function AdminSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-border p-4">
+      <SidebarFooter className="border-t border-sidebar-border bg-sidebar-accent/30 p-4">
         <Button 
-          variant="ghost" 
+          variant="outline" 
           onClick={handleLogout}
-          className="w-full justify-start"
+          className="w-full justify-start border-destructive/20 text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors"
         >
           <LogOut className="h-4 w-4" />
           {state !== "collapsed" && <span className="ml-2">Logout</span>}

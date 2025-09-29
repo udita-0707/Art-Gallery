@@ -17,6 +17,10 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminArtworks from "./pages/admin/AdminArtworks";
 import AdminArtworkForm from "./pages/admin/AdminArtworkForm";
+import AdminArtists from "./pages/admin/AdminArtists";
+import AdminExhibitions from "./pages/admin/AdminExhibitions";
+import AdminAnalytics from "./pages/admin/AdminAnalytics";
+import AdminSettings from "./pages/admin/AdminSettings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -56,10 +60,10 @@ const AppLayout = () => {
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/admin/artworks" element={<AdminArtworks />} />
               <Route path="/admin/artworks/new" element={<AdminArtworkForm />} />
-              <Route path="/admin/artists" element={<div>Admin Artists - Coming Soon</div>} />
-              <Route path="/admin/exhibitions" element={<div>Admin Exhibitions - Coming Soon</div>} />
-              <Route path="/admin/analytics" element={<div>Admin Analytics - Coming Soon</div>} />
-              <Route path="/admin/settings" element={<div>Admin Settings - Coming Soon</div>} />
+              <Route path="/admin/artists" element={<AdminArtists />} />
+              <Route path="/admin/exhibitions" element={<AdminExhibitions />} />
+              <Route path="/admin/analytics" element={<AdminAnalytics />} />
+              <Route path="/admin/settings" element={<AdminSettings />} />
               
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

@@ -2,11 +2,8 @@ import { Calendar, MapPin, Users, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { useSidebar } from '@/components/ui/sidebar';
 
 const Exhibitions = () => {
-  const { open } = useSidebar();
-  
   const exhibitions = [
     {
       id: '1',
@@ -143,7 +140,7 @@ const Exhibitions = () => {
 
         {/* Current Exhibitions */}
         <section className="mb-16">
-          <div className={`flex items-center mb-8 ${open ? 'flex-col items-start gap-3' : 'flex-row justify-between'}`}>
+          <div className="flex items-center justify-between mb-8">
             <h2 className="font-playfair text-2xl md:text-3xl font-bold text-foreground">
               Current Exhibitions
             </h2>
@@ -161,7 +158,7 @@ const Exhibitions = () => {
 
         {/* Upcoming Exhibitions */}
         <section className="mb-16">
-          <div className={`flex items-center mb-8 ${open ? 'flex-col items-start gap-3' : 'flex-row justify-between'}`}>
+          <div className="flex items-center justify-between mb-8">
             <h2 className="font-playfair text-2xl md:text-3xl font-bold text-foreground">
               Upcoming Exhibitions
             </h2>
@@ -187,7 +184,7 @@ const Exhibitions = () => {
 
         {/* Past Exhibitions */}
         <section className="mb-16">
-          <div className={`flex items-center mb-8 ${open ? 'flex-col items-start gap-3' : 'flex-row justify-between'}`}>
+          <div className="flex items-center justify-between mb-8">
             <h2 className="font-playfair text-2xl md:text-3xl font-bold text-foreground">
               Past Exhibitions
             </h2>

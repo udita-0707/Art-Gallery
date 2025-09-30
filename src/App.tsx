@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "./components/AppSidebar";
 import { AdminSidebar } from "./components/AdminSidebar";
@@ -22,13 +22,20 @@ import AdminExhibitions from "./pages/admin/AdminExhibitions";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminSettings from "./pages/admin/AdminSettings";
 import NotFound from "./pages/NotFound";
+import { LogIn, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
+import { Button } from '@/components/ui/button';
 
 const queryClient = new QueryClient();
 
 const AppLayout = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
   const isAdminLogin = location.pathname === '/admin/login';
+  const {signInWithGithub, signOut, user} = useAuth();
+  const displayName = user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email;
 
   if (isAdminLogin) {
     return (
@@ -43,8 +50,40 @@ const AppLayout = () => {
       <div className="min-h-screen flex w-full">
         {isAdminRoute ? <AdminSidebar /> : <AppSidebar />}
         <main className="flex-1 flex flex-col">
-          <header className="h-12 flex items-center border-b border-border bg-background/95 backdrop-blur-sm px-4">
-            <SidebarTrigger />
+          <header className="h-12 flex items-center justify-between border-b border-border bg-background/95 backdrop-blur-sm px-4">
+            <SidebarTrigger className="h-8 w-8 p-0" />
+            <div className="flex items-center gap-2 text-sm font-medium">
+              {user? (
+                <div className="flex items-center space-x-4">
+                  {user.user_metadata.avatar_url && (
+                    <img
+                      src={user.user_metadata.avatar_url}
+                      alt={displayName}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  )}
+                  <span className="text-black-300">{displayName}</span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0"
+                    onClick={signOut}
+                  >
+                    <LogOut className="h-4 w-4" />
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 p-0"
+                  onClick={signInWithGithub}
+                >
+                  <LogIn className="h-4 w-4" />
+                </Button>
+              )}
+              {/* <LogIn className="h-4 w-4" onClick={signInWithGithub}/> */}
+            </div>
           </header>
           <div className="flex-1 p-6">
             <Routes>

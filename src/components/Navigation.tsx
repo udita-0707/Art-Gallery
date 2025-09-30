@@ -94,7 +94,7 @@ const Navigation = () => {
             </div>
           </div>
         )}
-
+        
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden py-4 border-b border-border">

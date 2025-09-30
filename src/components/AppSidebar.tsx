@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Home, Palette, Users, Calendar, Heart, Search, LogOut, Sparkles, Shield } from 'lucide-react';
+import { Home, Palette, Users, Calendar, Heart, Search, LogOut, Sparkles, Shield, LogIn } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 
 const navigationItems = [
   { path: '/', label: 'Home', icon: Home },
@@ -34,6 +35,8 @@ export function AppSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
+  const {signInWithGithub, signOut, user} = useAuth();
+  const displayName = user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email;
   
   const isActive = (path: string) => location.pathname === path;
   const isCollapsed = state === 'collapsed';
@@ -55,7 +58,7 @@ export function AppSidebar() {
           {!isCollapsed && (
             <div>
               <h1 className="font-playfair text-xl font-bold text-foreground">
-                Gallery
+                Prism Aura Art Gallery
               </h1>
               <p className="text-sm text-muted-foreground">Art Collection</p>
             </div>
@@ -127,32 +130,58 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="p-4 border-t border-border">
-        {!isCollapsed ? (
+      {user ? (
+        !isCollapsed ? (
           <div className="flex items-center gap-3">
             <Avatar className="h-8 w-8">
-              <AvatarImage src="" />
+              <AvatarImage src={user?.user_metadata?.avatar_url || ""} />
               <AvatarFallback className="bg-accent text-accent-foreground text-sm font-medium">
-                U
+                {displayName?.charAt(0) || "U"}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-foreground truncate">Udita</p>
-              <p className="text-xs text-muted-foreground truncate">udita.23csai@nst.rishihood...</p>
+              <p className="text-sm font-medium text-foreground truncate">
+                {displayName}
+              </p>
+              <p className="text-xs text-muted-foreground truncate">
+                {user?.email}
+              </p>
             </div>
-            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0"
+              onClick={signOut}
+            >
               <LogOut className="h-4 w-4" />
             </Button>
           </div>
         ) : (
-          <Button variant="ghost" size="sm" className="h-10 w-10 p-0 mx-auto">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-10 w-10 p-0 mx-auto"
+            onClick={signOut}
+          >
             <Avatar className="h-8 w-8">
+              <AvatarImage src={user?.user_metadata?.avatar_url || ""} />
               <AvatarFallback className="bg-accent text-accent-foreground text-sm">
-                U
+                {displayName?.charAt(0) || "U"}
               </AvatarFallback>
             </Avatar>
           </Button>
-        )}
-      </SidebarFooter>
+        )
+      ) : (
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-10 w-10 p-0 mx-auto"
+          onClick={signInWithGithub}
+        >
+          <LogIn className="h-4 w-4" />
+        </Button>
+      )}
+    </SidebarFooter>
     </Sidebar>
   );
 }

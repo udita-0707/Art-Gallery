@@ -7,7 +7,7 @@ import {
   Settings,
   LogOut
 } from 'lucide-react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import {
   Sidebar,
   SidebarContent,
@@ -35,6 +35,16 @@ const adminItems = [
 export function AdminSidebar() {
   const { state } = useSidebar();
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  const isActive = (path: string) => {
+    if (path === '/admin') {
+      return location.pathname === path;
+    }
+    return location.pathname.startsWith(path);
+  };
+  
+  const isCollapsed = state === 'collapsed';
 
   const handleLogout = () => {
     // Placeholder for logout functionality
@@ -42,35 +52,30 @@ export function AdminSidebar() {
   };
 
   return (
-    <Sidebar className={state === "collapsed" ? "w-14" : "w-60"}>
-      <SidebarHeader className="border-b border-sidebar-border bg-sidebar-accent/50 p-4">
-        {state !== "collapsed" && (
+    <Sidebar className="border-r border-border bg-background">
+      <SidebarHeader className="p-6 border-b border-border">
+        {!isCollapsed && (
           <div>
-            <h2 className="text-lg font-semibold text-sidebar-foreground">Gallery Admin</h2>
-            <p className="text-sm text-sidebar-muted-foreground">Management Panel</p>
+            <h2 className="font-playfair text-xl font-bold text-foreground">Gallery Admin</h2>
+            <p className="text-sm text-muted-foreground">Management Panel</p>
           </div>
         )}
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="px-3 py-4">
         <SidebarGroup>
-          <SidebarGroupLabel>Management</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="space-y-1">
               {adminItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                     <NavLink 
-                       to={item.url} 
-                       end={item.url === '/admin'}
-                       className={({ isActive }) =>
-                         isActive 
-                           ? "bg-primary text-primary-foreground font-semibold shadow-sm ring-1 ring-primary/20" 
-                           : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all duration-200"
-                       }
-                    >
-                      <item.icon className="h-4 w-4" />
-                      {state !== "collapsed" && <span>{item.title}</span>}
+                  <SidebarMenuButton 
+                    asChild
+                    isActive={isActive(item.url)}
+                    className="h-11 px-3 rounded-lg"
+                  >
+                    <NavLink to={item.url} end={item.url === '/admin'} className="flex items-center gap-3">
+                      <item.icon className="h-5 w-5" />
+                      {!isCollapsed && <span className="font-medium">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -80,14 +85,14 @@ export function AdminSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-sidebar-border bg-sidebar-accent/30 p-4">
+      <SidebarFooter className="p-4 border-t border-border">
         <Button 
           variant="outline" 
           onClick={handleLogout}
           className="w-full justify-start border-destructive/20 text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors"
         >
           <LogOut className="h-4 w-4" />
-          {state !== "collapsed" && <span className="ml-2">Logout</span>}
+          {!isCollapsed && <span className="ml-2">Logout</span>}
         </Button>
       </SidebarFooter>
     </Sidebar>

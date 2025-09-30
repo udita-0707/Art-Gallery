@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Artwork } from '@/types/gallery';
+import { useToast } from '@/hooks/use-toast';
 
 interface ArtworkCardProps {
   artwork: Artwork;
@@ -13,6 +14,7 @@ interface ArtworkCardProps {
 const ArtworkCard = ({ artwork, size = 'medium' }: ArtworkCardProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const { toast } = useToast();
 
   const sizeClasses = {
     small: 'aspect-[3/4]',
@@ -20,11 +22,41 @@ const ArtworkCard = ({ artwork, size = 'medium' }: ArtworkCardProps) => {
     large: 'aspect-[3/4] md:aspect-[4/5]'
   };
 
+  // Check if artwork is favorited on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('gallery-favorites');
+    if (saved) {
+      const favorites = JSON.parse(saved);
+      setIsFavorite(favorites.includes(artwork.id));
+    }
+  }, [artwork.id]);
+
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsFavorite(!isFavorite);
-    // In a real app, this would update the favorites in state/backend
+    
+    const saved = localStorage.getItem('gallery-favorites');
+    const favorites = saved ? JSON.parse(saved) : [];
+    
+    if (isFavorite) {
+      // Remove from favorites
+      const updated = favorites.filter((id: string) => id !== artwork.id);
+      localStorage.setItem('gallery-favorites', JSON.stringify(updated));
+      setIsFavorite(false);
+      toast({
+        title: "Removed from favorites",
+        description: `${artwork.title} has been removed from your collection.`,
+      });
+    } else {
+      // Add to favorites
+      const updated = [...favorites, artwork.id];
+      localStorage.setItem('gallery-favorites', JSON.stringify(updated));
+      setIsFavorite(true);
+      toast({
+        title: "Added to favorites",
+        description: `${artwork.title} has been added to your collection.`,
+      });
+    }
   };
 
   return (

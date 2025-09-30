@@ -9,12 +9,17 @@ import { Link } from 'react-router-dom';
 const Favorites = () => {
   const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
   
-  // In a real app, this would come from local storage or backend
-  useEffect(() => {
+  const loadFavorites = () => {
     const saved = localStorage.getItem('gallery-favorites');
     if (saved) {
       setFavoriteIds(JSON.parse(saved));
+    } else {
+      setFavoriteIds([]);
     }
+  };
+  
+  useEffect(() => {
+    loadFavorites();
   }, []);
 
   const favoriteArtworks = artworks.filter(artwork => favoriteIds.includes(artwork.id));
@@ -63,7 +68,11 @@ const Favorites = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {favoriteArtworks.map((artwork) => (
-                <ArtworkCard key={artwork.id} artwork={artwork} />
+                <ArtworkCard 
+                  key={artwork.id} 
+                  artwork={artwork}
+                  onFavoriteChange={loadFavorites}
+                />
               ))}
             </div>
           </div>

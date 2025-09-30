@@ -9,9 +9,10 @@ import { useToast } from '@/hooks/use-toast';
 interface ArtworkCardProps {
   artwork: Artwork;
   size?: 'small' | 'medium' | 'large';
+  onFavoriteChange?: () => void;
 }
 
-const ArtworkCard = ({ artwork, size = 'medium' }: ArtworkCardProps) => {
+const ArtworkCard = ({ artwork, size = 'medium', onFavoriteChange }: ArtworkCardProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const { toast } = useToast();
@@ -47,6 +48,7 @@ const ArtworkCard = ({ artwork, size = 'medium' }: ArtworkCardProps) => {
         title: "Removed from favorites",
         description: `${artwork.title} has been removed from your collection.`,
       });
+      onFavoriteChange?.();
     } else {
       // Add to favorites
       const updated = [...favorites, artwork.id];
@@ -56,6 +58,7 @@ const ArtworkCard = ({ artwork, size = 'medium' }: ArtworkCardProps) => {
         title: "Added to favorites",
         description: `${artwork.title} has been added to your collection.`,
       });
+      onFavoriteChange?.();
     }
   };
 

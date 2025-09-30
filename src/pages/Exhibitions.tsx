@@ -68,9 +68,9 @@ const Exhibitions = () => {
       exhibition.featured ? 'ring-2 ring-accent/20' : ''
     }`}>
       <CardHeader>
-        <div className="flex items-start justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:justify-between gap-3">
           <div className="flex-1">
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
               <CardTitle className="font-playfair text-xl">{exhibition.title}</CardTitle>
               {exhibition.featured && (
                 <Badge variant="secondary" className="text-xs">Featured</Badge>

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import ArtworkCard from '@/components/ArtworkCard';
 import { artworks } from '@/data/artworks';
+import { Link } from 'react-router-dom';
 
 const Favorites = () => {
   const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
@@ -81,9 +82,11 @@ const Favorites = () => {
                 Start building your personal collection by adding artworks to your favorites
               </p>
               
-              <Button className="gallery-button-primary">
-                Explore Artworks
-              </Button>
+              <Link to="/artworks">
+                <Button className="gallery-button-primary">
+                  Explore Artworks
+                </Button>
+              </Link>
             </Card>
           </div>
         )}

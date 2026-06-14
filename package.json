@@ -9,7 +9,9 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
-    "build:server": "npm run db:generate --workspace=@spectrum/database && npm run build --workspace=@spectrum/server"
+    "build:server": "npm run db:generate --workspace=@spectrum/database && npm run build --workspace=@spectrum/server",
+    "build:web": "npm run build --workspace=@spectrum/web",
+    "build:admin": "npm run build --workspace=@spectrum/admin"
   },
   "devDependencies": {
     "turbo": "^2.9.16"

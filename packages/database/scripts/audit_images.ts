@@ -1,4 +1,9 @@
 import { PrismaClient } from '@prisma/client';
+import { readFileSync } from 'fs';
+
+const WORKING_ART_IMAGE_URLS: string[] = JSON.parse(
+  readFileSync('scripts/working_image_urls.json', 'utf-8')
+);
 
 const prisma = new PrismaClient();
 
@@ -32,17 +37,7 @@ async function main() {
   console.table(report);
   console.log(`\nFound ${broken.length} broken images.`);
   
-  const fallbacks = [
-    'https://upload.wikimedia.org/wikipedia/commons/3/3f/Fronalpstock_big.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/e/e4/Stonehenge%2C_2007_07_30.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/9/96/Golden_Gate_Bridge%2C_SF_%28cropped%29.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/5/5c/Mont_Saint-Michel_and_Saint_Jude.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/4/45/Aurora_Borealis_2.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/6/66/Monet%2C_Claudine_2.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/3/34/Hubble_Deep_Field_1b.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/1/1e/Starry_Night_Over_the_Rhone.jpg',
-    'https://upload.wikimedia.org/wikipedia/commons/5/5f/The_Scream.jpg'
-  ];
+  const fallbacks = WORKING_ART_IMAGE_URLS;
   
   if (broken.length > 0) {
     let fbIndex = 0;
